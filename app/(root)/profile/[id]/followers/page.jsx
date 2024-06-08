@@ -1,13 +1,12 @@
-"use client";
+"use client"
 
-import { useUser } from "@clerk/nextjs";
 import Loader from "@components/Loader";
-import PostCard from "@components/cards/PostCard";
 import ProfileCard from "@components/cards/ProfileCard";
+import UserCard from "@components/cards/UserCard";
 import { useParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
-const ProfilePosts = () => {
+const Followers = () => {
   const { id } = useParams();
 
   const [loading, setLoading] = useState(true);
@@ -30,23 +29,19 @@ const ProfilePosts = () => {
     getUser();
   }, [id]);
 
-  const { user, isLoaded } = useUser();
-
-  console.log(userData)
-
-  return loading || !isLoaded ? (
+  return loading ? (
     <Loader />
   ) : (
     <div className="flex flex-col gap-9">
-      <ProfileCard userData={userData} activeTab="Posts" />
+      <ProfileCard userData={userData} activeTab="Followers" />
 
       <div className="flex flex-col gap-9">
-        {userData?.posts?.map((post) => (
-          <PostCard key={post._id} post={post} creator={post.creator} loggedInUser={user} update={getUser}/>
+        {userData?.followers?.map((person) => (
+          <UserCard key={person._id} userData={person} update={getUser} />
         ))}
       </div>
     </div>
   );
 };
 
-export default ProfilePosts;
+export default Followers;

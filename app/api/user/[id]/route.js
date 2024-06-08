@@ -1,21 +1,33 @@
+import Post from "@lib/models/Post";
 import User from "@lib/models/User";
 import { connectToDB } from "@lib/mongodb/mongoose";
 
 export const GET = async (req, { params }) => {
     try {
-		console.log("params: ",params)
         await connectToDB();
+
         const user = await User.findOne({ clerkId: params.id })
-            .populate("followers following")
+            .populate({
+                path: "posts savedPosts likedPosts",
+                model: Post,
+                populate: {
+                    path: "creator",
+                    model: User,
+                },
+            })
+            .populate({
+                path: "followers following",
+                model: User,
+                populate: {
+                    path: "posts savedPosts likedPosts",
+                    model: Post,
+                },
+            })
             .exec();
 
-        if (!user) {
-            return new Response("User not found", { status: 404 });
-        }
-
         return new Response(JSON.stringify(user), { status: 200 });
-    } catch (error) {
-        console.log(error);
+    } catch (err) {
+        console.error(err);
         return new Response("Failed to get user", { status: 500 });
     }
 };

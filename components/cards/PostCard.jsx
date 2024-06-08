@@ -10,15 +10,63 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+const PostCard = ({ post, creator, loggedInUser, update }) => {
+	const [userData, setUserData] = useState({});
 
-const PostCard = ({ post, creator, loggedInUser }) => {
-	const [isLiked, setIsLiked] = useState(false);
-	const [isSaved, setIsSaved] = useState(false);
+	const getUser = async () => {
+		const response = await fetch(`/api/user/${loggedInUser.id}`);
+		const data = await response.json();
+		setUserData(data);
+	};
+
+	useEffect(() => {
+		getUser();
+	}, []);
+
+	const isSaved = userData?.savedPosts?.find((item) => item._id === post._id);
+	const isLiked = userData?.likedPosts?.find((item) => item._id === post._id);
+
+	const handleSave = async () => {
+		const response = await fetch(
+			`/api/user/${loggedInUser.id}/save/${post._id}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		const data = await response.json();
+		setUserData(data);
+		update()
+	};
+
+	const handleLike = async () => {
+		const response = await fetch(
+			`/api/user/${loggedInUser.id}/like/${post._id}`,
+			{
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		);
+		const data = await response.json();
+		setUserData(data);
+		update()
+	};
+
+	const handleDelete = async () => {
+		await fetch(`/api/post/${post._id}/${userData._id}`, {
+			method: "DELETE",
+		});
+		update()
+	}
 
 	return (
 		<div className="w-full max-w-xl rounded-lg flex flex-col gap-4 bg-dark-1 p-5 max-sm:gap-2">
-			<div className='flex justify-between '>
-				<Link href={`/profile/${creator._id}`}>
+			<div className="flex justify-between">
+				<Link href={`/profile/${creator._id}/posts`}>
 					<div className="flex gap-3 items-center">
 						<Image
 							src={creator.profilePhoto}
@@ -37,6 +85,7 @@ const PostCard = ({ post, creator, loggedInUser }) => {
 						</div>
 					</div>
 				</Link>
+
 				{loggedInUser.id === creator.clerkId && (
 					<Link href={`/edit-post/${post._id}`}>
 						<BorderColor sx={{ color: "white", cursor: "pointer" }} />
@@ -63,26 +112,26 @@ const PostCard = ({ post, creator, loggedInUser }) => {
 			<div className="flex justify-between">
 				<div className="flex gap-2 items-center">
 					{!isLiked ? (
-						<FavoriteBorder sx={{ color: "white", cursor: "pointer" }} />
+						<FavoriteBorder sx={{ color: "white", cursor: "pointer" }} onClick={() => handleLike()} />
 					) : (
-						<Favorite sx={{ color: "red", cursor: "pointer" }} />
+						<Favorite sx={{ color: "red", cursor: "pointer" }} onClick={() => handleLike()} />
 					)}
 					<p className="text-light-1">{post.likes.length}</p>
 				</div>
+
 				{loggedInUser.id !== creator.clerkId &&
 					(isSaved ? (
-						<Bookmark sx={{ color: "purple", cursor: "pointer" }} />
+						<Bookmark sx={{ color: "purple", cursor: "pointer" }} onClick={() => handleSave()} />
 					) : (
-						<BookmarkBorder sx={{ color: "white", cursor: "pointer" }} />
+						<BookmarkBorder sx={{ color: "white", cursor: "pointer" }} onClick={() => handleSave()} />
 					))}
 
 				{loggedInUser.id === creator.clerkId && (
-					<Delete sx={{ color: "white", cursor: "pointer" }} />
+					<Delete sx={{ color: "white", cursor: "pointer" }} onClick={() => handleDelete()} />
 				)}
 			</div>
-
 		</div>
-	)
-}
+	);
+};
 
-export default PostCard
+export default PostCard;

@@ -12,31 +12,19 @@ const LeftSideBar = () => {
 	const { user, isLoaded } = useUser();
 
 	const [loading, setLoading] = useState(true);
+
 	const [userData, setUserData] = useState({});
 
 	const getUser = async () => {
-		if (!user) return;
-		console.log(user.id);
-		try {
-			const response = await fetch(`/api/user/${user.id}`);
-			if (!response.ok) {
-				throw new Error('Network response was not ok');
-			}
-			const data = await response.json();
-			setUserData(data);
-		} catch (error) {
-			console.error("Failed to fetch user data:", error);
-		} finally {
-			setLoading(false);
-		}
+		const response = await fetch(`/api/user/${user.id}`);
+		const data = await response.json();
+		setUserData(data);
+		setLoading(false);
 	};
 
 	useEffect(() => {
 		if (user) {
 			getUser();
-		} 
-		else {
-			setLoading(false); // Ensure loading is false if user is not available
 		}
 	}, [user]);
 

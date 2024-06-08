@@ -7,7 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
-const UserCard = ({ userData }) => {
+const UserCard = ({ userData, update }) => {
 	const { user, isLoaded } = useUser();
 
 	const [loading, setLoading] = useState(true);
@@ -77,12 +77,12 @@ const UserCard = ({ userData }) => {
 				(isFollowing ? (
 					<PersonRemove
 						sx={{ color: "#7857FF", cursor: "pointer" }}
-						// onClick={() => handleFollow()}
+						onClick={() => handleFollow()}
 					/>
 				) : (
 					<PersonAddAlt
 						sx={{ color: "#7857FF", cursor: "pointer" }}
-						// onClick={() => {handleFollow();}}
+						onClick={() => {handleFollow();}}
 					/>
 				))}
 		</div>
