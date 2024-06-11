@@ -3,7 +3,7 @@ import { connectToDB } from "@lib/mongodb/mongoose"
 
 export const GET = async (req) => {
   try {
-    await connectToDB();
+    await connectToDB()
 
     const allUsers = await User.find().populate("posts savedPosts likedPosts followers following").exec()
 

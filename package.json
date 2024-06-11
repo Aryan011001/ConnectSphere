@@ -1,5 +1,5 @@
 {
-  "name": "socialmedia",
+  "name": "vibezone",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,22 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.1.4",
-    "@clerk/themes": "^2.1.9",
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.19",
-    "@mui/material": "^5.15.19",
-    "mongodb": "^6.7.0",
-    "mongoose": "^8.4.1",
-    "next": "14.2.3",
+    "@clerk/nextjs": "^4.28.1",
+    "@clerk/themes": "^1.7.9",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.15.1",
+    "mongoose": "^8.0.3",
+    "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.51.5",
-    "svix": "^1.24.0"
+    "react-hook-form": "^7.49.2",
+    "svix": "^1.15.0"
   },
   "devDependencies": {
+    "autoprefixer": "^10.0.1",
     "postcss": "^8",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.3.0"
   }
 }

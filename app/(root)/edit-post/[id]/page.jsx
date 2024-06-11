@@ -5,7 +5,6 @@ import Posting from "@components/form/Posting";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
-
 const EditPost = () => {
   const { id } = useParams();
 
@@ -36,14 +35,14 @@ const EditPost = () => {
     postPhoto: postData?.postPhoto,
   }
 
-
+  console.log(postInfo)
   return loading ? (
     <Loader />
   ) : (
     <div className="pt-6">
-      <Posting post={postInfo} apiEndpoint={`/api/post/${id}`} />
+      <Posting post={postInfo} apiEndpoint={`/api/post/${id}`}/>
     </div>
   );
 };
 
-export default EditPost
+export default EditPost;

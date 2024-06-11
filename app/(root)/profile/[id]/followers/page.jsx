@@ -37,7 +37,7 @@ const Followers = () => {
 
       <div className="flex flex-col gap-9">
         {userData?.followers?.map((person) => (
-          <UserCard key={person._id} userData={person} update={getUser} />
+          <UserCard key={person._id} userData={person} update={getUser}/>
         ))}
       </div>
     </div>
